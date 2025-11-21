@@ -1,0 +1,7 @@
+{
+  "name": "GENTECH植物光分析儀",
+  "description": "Upload a plant photo to instantly analyze its Light Compensation Point (LPC) and recommended PPFD levels for optimal growth.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
