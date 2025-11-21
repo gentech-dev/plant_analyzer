@@ -1,6 +1,7 @@
 
 export interface LightData {
   wattage: string;
+  url: string; // Product URL
   distances: {
     distanceCm: number;
     ppfd: number;
@@ -11,6 +12,7 @@ export interface LightData {
 export const GENTECH_LIGHTS: LightData[] = [
   {
     wattage: '7W',
+    url: 'https://www.gentech.tw/products/7w%E6%A4%8D%E7%89%A9%E7%87%88',
     distances: [
       { distanceCm: 20, ppfd: 604, lux: 36441 },
       { distanceCm: 30, ppfd: 469, lux: 28189 },
@@ -22,6 +24,7 @@ export const GENTECH_LIGHTS: LightData[] = [
   },
   {
     wattage: '10W',
+    url: 'https://www.gentech.tw/products/10w%E6%A4%8D%E7%89%A9%E7%87%88',
     distances: [
       { distanceCm: 20, ppfd: 876, lux: 52917 },
       { distanceCm: 30, ppfd: 431, lux: 26054 },
@@ -33,6 +36,7 @@ export const GENTECH_LIGHTS: LightData[] = [
   },
   {
     wattage: '24W',
+    url: 'https://www.gentech.tw/products/24w%E6%A4%8D%E7%89%A9%E7%87%88',
     distances: [
       { distanceCm: 20, ppfd: 2266, lux: 139065 },
       { distanceCm: 30, ppfd: 1166, lux: 71494 },
@@ -44,6 +48,7 @@ export const GENTECH_LIGHTS: LightData[] = [
   },
   {
     wattage: '28W',
+    url: 'https://www.gentech.tw/products/28w%E6%A4%8D%E7%89%A9%E7%87%88',
     distances: [
       { distanceCm: 20, ppfd: 1154, lux: 69500 },
       { distanceCm: 30, ppfd: 421, lux: 25704 },

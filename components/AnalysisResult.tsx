@@ -1,7 +1,7 @@
 
 import React, { useMemo } from 'react';
 import { PlantAnalysis } from '../types';
-import { Sun, Wind, Sprout, Activity, ArrowRight, Lightbulb, CheckCircle2, Ruler, Rainbow } from 'lucide-react';
+import { Sun, Wind, Sprout, Activity, ArrowRight, Lightbulb, CheckCircle2, Rainbow, ShoppingBag } from 'lucide-react';
 import { GENTECH_LIGHTS } from '../utils/lightingData';
 
 interface AnalysisResultProps {
@@ -79,6 +79,7 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
     const options = GENTECH_LIGHTS.flatMap(light => 
       light.distances.map(d => ({
         wattage: light.wattage,
+        url: light.url, // Pass the URL through
         wattageVal: parseInt(light.wattage),
         distance: d.distanceCm,
         ppfd: d.ppfd,
@@ -289,6 +290,19 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
                         此配置可提供 <strong>{recommendation.ppfd} PPFD</strong>。
                     </span>
                 </div>
+                
+                {/* Buy Now Button */}
+                <div className="mt-4 pt-2 border-t border-white/10">
+                    <a 
+                      href={recommendation.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-black font-bold py-3.5 rounded-2xl transition-all shadow-lg shadow-amber-500/20 active:scale-[0.98]"
+                    >
+                      <ShoppingBag size={20} strokeWidth={2.5} />
+                      <span>購買此配置 ({recommendation.wattage})</span>
+                    </a>
+                </div>
             </div>
         </div>
       )}
@@ -311,7 +325,7 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
             </div>
          )}
 
-         <div className="bg-gray-50 rounded-2xl p-4">
+         <div className="bg-gray-5 rounded-2xl p-4">
             <p className="text-gray-600 text-sm leading-relaxed">
                 {data.lightSummary}
             </p>
