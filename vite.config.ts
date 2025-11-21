@@ -8,7 +8,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, (process as any).cwd(), '');
 
   return {
-    base: './',
+    base: '/plant_analyzer/',
     plugins: [react()],
     define: {
       // This is necessary to shim process.env.API_KEY in the browser environment
