@@ -1,7 +1,7 @@
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { PlantAnalysis } from '../types';
-import { Sun, Wind, Sprout, Activity, ArrowRight, Lightbulb, CheckCircle2, Rainbow, ShoppingBag } from 'lucide-react';
+import { Sun, Wind, Sprout, Activity, ArrowRight, Lightbulb, CheckCircle2, Rainbow, ShoppingBag, ImageOff } from 'lucide-react';
 import { GENTECH_LIGHTS } from '../utils/lightingData';
 
 interface AnalysisResultProps {
@@ -68,6 +68,16 @@ const LightCurveChart: React.FC<{
 }
 
 const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
+  const [imgError, setImgError] = useState<Record<string, boolean>>({});
+
+  // Reset error state when data changes (new analysis)
+  useEffect(() => {
+    setImgError({});
+  }, [data]);
+
+  const handleImgError = (wattage: string) => {
+    setImgError(prev => ({ ...prev, [wattage]: true }));
+  };
   
   const recommendation = useMemo(() => {
     const min = data.numericValues.ppfdMin;
@@ -80,6 +90,7 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
       light.distances.map(d => ({
         wattage: light.wattage,
         url: light.url, // Pass the URL through
+        imageUrl: light.imageUrl, // Pass image URL
         wattageVal: parseInt(light.wattage),
         distance: d.distanceCm,
         ppfd: d.ppfd,
@@ -256,7 +267,7 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
       )}
 
 
-      {/* Card 4: GENTECH Recommendation (Black/Gold Theme) */}
+      {/* Card 4: GENTECH Recommendation (Black/Gold Theme with Image) */}
       {recommendation && (
         <div className="w-full rounded-[2.5rem] bg-gradient-to-br from-gray-900 to-black p-6 text-white shadow-xl shadow-gray-400 hover:scale-[1.02] transition-transform duration-300 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
             <div className="flex justify-between items-start mb-4">
@@ -266,42 +277,64 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ data }) => {
                     </h3>
                     <p className="text-gray-400 text-xs mt-1">依照您的植物需求量身推薦</p>
                 </div>
-                <div className="bg-white/10 px-3 py-1 rounded-full text-xs text-amber-300 border border-amber-500/30">
+                <div className="bg-white/10 px-3 py-1 rounded-full text-xs text-amber-300 border border-amber-500/30 whitespace-nowrap">
                     最佳適配
                 </div>
             </div>
             
-            <div className="flex flex-col gap-3 mt-2">
-                <div className="flex items-center justify-between bg-white/5 p-3 rounded-2xl border border-white/10">
-                    <span className="text-gray-300 text-sm">推薦型號</span>
-                    <span className="text-2xl font-black tracking-tight text-white">{recommendation.wattage} <span className="text-base font-normal text-gray-400">全光譜植物燈</span></span>
+            <div className="flex flex-col md:flex-row gap-5">
+                {/* Product Image Section */}
+                <div className="w-full md:w-2/5 aspect-square bg-white rounded-2xl p-2 flex items-center justify-center overflow-hidden shadow-inner relative">
+                    {imgError[recommendation.wattage] ? (
+                        <div className="flex flex-col items-center justify-center text-gray-300">
+                             <ImageOff className="w-10 h-10 mb-2 opacity-50" />
+                             <span className="text-xs font-medium">圖片載入失敗</span>
+                        </div>
+                    ) : (
+                        <img 
+                            src={recommendation.imageUrl} 
+                            alt={`${recommendation.wattage} Grow Light`}
+                            className="w-full h-full object-contain hover:scale-105 transition-transform duration-500"
+                            referrerPolicy="no-referrer"
+                            onError={() => handleImgError(recommendation.wattage)}
+                        />
+                    )}
                 </div>
 
-                <div className="flex items-center justify-between bg-white/5 p-3 rounded-2xl border border-white/10">
-                    <span className="text-gray-300 text-sm">建議距離</span>
-                    <span className="text-2xl font-black tracking-tight text-amber-400">{recommendation.distance} <span className="text-sm font-normal text-amber-200/70">cm</span></span>
-                </div>
+                {/* Details Section */}
+                <div className="w-full md:w-3/5 flex flex-col justify-between">
+                    <div className="flex flex-col gap-3">
+                        <div className="flex items-center justify-between bg-white/5 p-3 rounded-2xl border border-white/10">
+                            <span className="text-gray-300 text-sm">推薦瓦數</span>
+                            <span className="text-xl font-black tracking-tight text-white">{recommendation.wattage} <span className="text-sm font-normal text-gray-400">全光譜</span></span>
+                        </div>
 
-                <div className="mt-2 text-xs text-gray-500 flex items-start gap-2">
-                    <CheckCircle2 size={14} className="mt-0.5 text-green-500 min-w-[14px]" />
-                    <span>
-                        系統判定為<strong>{data.plantSize === 'Large' ? '大型' : data.plantSize === 'Medium' ? '中型' : '小型'}植栽</strong>，
-                        已為您挑選適合的瓦數以確保光照覆蓋率。
-                        此配置可提供 <strong>{recommendation.ppfd} PPFD</strong>。
-                    </span>
-                </div>
-                
-                {/* Buy Now Button */}
-                <div className="mt-4 pt-2 border-t border-white/10">
-                    <a 
-                      href={recommendation.url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-black font-bold py-3.5 rounded-2xl transition-all shadow-lg shadow-amber-500/20 active:scale-[0.98]"
-                    >
-                      <ShoppingBag size={20} strokeWidth={2.5} />
-                      <span>購買此配置 ({recommendation.wattage})</span>
-                    </a>
+                        <div className="flex items-center justify-between bg-white/5 p-3 rounded-2xl border border-white/10">
+                            <span className="text-gray-300 text-sm">建議距離</span>
+                            <span className="text-xl font-black tracking-tight text-amber-400">{recommendation.distance} <span className="text-xs font-normal text-amber-200/70">cm</span></span>
+                        </div>
+
+                        <div className="text-xs text-gray-500 flex items-start gap-2 leading-tight">
+                            <CheckCircle2 size={12} className="mt-0.5 text-green-500 min-w-[12px]" />
+                            <span>
+                                適合<strong>{data.plantSize === 'Large' ? '大型' : data.plantSize === 'Medium' ? '中型' : '小型'}植栽</strong>，
+                                提供 <strong>{recommendation.ppfd} PPFD</strong>。
+                            </span>
+                        </div>
+                    </div>
+                    
+                    {/* Buy Now Button */}
+                    <div className="mt-4 pt-2">
+                        <a 
+                        href={recommendation.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-black font-bold py-3 rounded-xl transition-all shadow-lg shadow-amber-500/20 active:scale-[0.98]"
+                        >
+                        <ShoppingBag size={18} strokeWidth={2.5} />
+                        <span>購買配置 ({recommendation.wattage})</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
