@@ -3,25 +3,101 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GENTECH - 植物光照分析儀</title>
+    <title>Gentech Pro | 靖軒科技照明</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              // Japanese Modern / Warm Minimalism Palette
+              background: '#FAF9F6', // Off-white / Paper
+              surface: '#ffffff', // Pure White
+              surfaceHighlight: '#f5f5f4', // Stone 100
+              border: '#e7e5e4', // Stone 200
+              
+              brand: {
+                bronze: '#A89166', // Antique Bronze (Rinnai Style)
+                bronzeLight: '#D6C6A6', // Light Champagne
+                bronzeDark: '#806D48', // Darker Bronze
+                text: '#292524', // Stone 800 (Charcoal)
+                muted: '#78716c', // Stone 500 (Warm Grey)
+                dark: '#1c1917', // Stone 900
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              serif: ['Playfair Display', 'serif'], // Optional for headings if needed
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.6s ease-out forwards', // Slower, more elegant fade
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(15px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
     <style>
       body {
+        background-color: #FAF9F6;
+        color: #292524;
         font-family: 'Inter', sans-serif;
-        background: linear-gradient(180deg, #e0f2fe 0%, #f0f9ff 50%, #ffffff 100%); /* Light blue fade to white */
-        min-height: 100vh;
       }
-      .font-heavy {
-        font-weight: 900;
+
+      /* Remove default number input spinner */
+      input[type=number]::-webkit-inner-spin-button, 
+      input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+      }
+      input[type=number] {
+        -moz-appearance: textfield;
+      }
+
+      /* Custom Scrollbar - Minimalist */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #d6d3d1; 
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #a8a29e; 
+      }
+      
+      .scrollbar-hide::-webkit-scrollbar {
+          display: none;
       }
     </style>
-
-
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "recharts": "https://aistudiocdn.com/recharts@^3.5.0",
+    "firebase/": "https://aistudiocdn.com/firebase@^12.6.0/",
+    "react-dom": "https://aistudiocdn.com/react-dom@^19.2.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="./index.tsx"></script>
-
+  <script type="module" src="/index.tsx"></script>
 </body>
 </html>

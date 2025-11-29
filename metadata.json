@@ -1,7 +1,5 @@
 {
-  "name": "GENTECH植物光分析儀",
-  "description": "Upload a plant photo to instantly analyze its Light Compensation Point (LPC) and recommended PPFD levels for optimal growth.",
-  "requestFramePermissions": [
-    "camera"
-  ]
+  "name": "Gentech Pro",
+  "description": "Professional B2B AI-powered interior design lighting platform for Gentech (靖軒科技).",
+  "requestFramePermissions": []
 }
